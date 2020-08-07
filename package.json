@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/dgr993/Employee-Tracker---Assignment-10#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "env": "0.0.2",
     "inquirer": "^7.3.3",
     "mysql": "^2.18.1"
   }

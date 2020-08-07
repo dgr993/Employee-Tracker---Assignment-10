@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require('dotenv').config();
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -11,7 +12,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "",
+  password: process.env.password,
   database: "employee_tracker_db"
 });
 
@@ -44,4 +45,37 @@ function start(){
             connection.end();
         }
     })
+}
+
+function add() {
+    inquirer.prompt ([ 
+   
+   {
+       type: "input",
+       name: "name",
+       message: "Enter your name"
+   },
+  
+   {
+       type: "input",
+       name: "email",
+       message: "Enter your email"
+   },
+ 
+   {
+       type: "input",
+       name: "id",
+       message: "Enter your id"
+   },
+  
+   {
+       type: "list",
+       name: "job",
+       message: "Enter your job role",
+       choices: ['Engineer','Intern','Manager']
+
+   }
+   ])
+
+
 }
