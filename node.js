@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-// let password = "thisismymacbook1*2";
+let password = "";
 
 var connection = mysql.createConnection({
   host: "localhost",
