@@ -1,0 +1,23 @@
+{
+  "name": "employee-tracker---assignment-10",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgr993/Employee-Tracker---Assignment-10.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dgr993/Employee-Tracker---Assignment-10/issues"
+  },
+  "homepage": "https://github.com/dgr993/Employee-Tracker---Assignment-10#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
