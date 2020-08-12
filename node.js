@@ -140,7 +140,6 @@ function addEmployees() {
                     value: emp.id
                 })
             })
-
         inquirer.prompt([
 
             {
@@ -163,13 +162,19 @@ function addEmployees() {
                 type: "list",
                 name: "manager_id",
                 message: "Choose the manager id for the employee",
-                choices: myEmp
+                choices: myEmp,
+                when: function(answers) {
+                    return myEmp.length > 0
+                }
             }
 
         ])
 
             .then(function (answer) {
-                connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, lastname: answer.lastname, role_id: answer.role_id, manager_id: manager_id}, function (err) {
+                if (!answer.manager_id){
+                    answer.manager_id = null;
+                }
+                connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, last_name: answer.lastname, role_id: answer.role_id, manager_id: answer.manager_id}, function (err) {
                     if (err) throw err
 
                     start();
