@@ -20,7 +20,6 @@ CREATE TABLE role(
 id int AUTO_INCREMENT not null,
   -- Create a string column called "language" --
 title varchar(30) not null, 
-
 salary decimal(10,2) not null,
 department_id int not null,
 foreign key (department_id) references department (id),
