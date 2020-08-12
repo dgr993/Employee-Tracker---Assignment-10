@@ -106,7 +106,7 @@ function addRoles() {
             {
                 type: "list",
                 name: "department_id",
-                message: "Enter the department_id",
+                message: "Choose the department id for the role",
                 choices: myDep
             }
 
@@ -121,6 +121,61 @@ function addRoles() {
                 )
             })
     })
+}
 
+function addEmployees() {
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err
+        let myRol = res.map(rol => {
+            return ({
+                name: rol.title,
+                value: rol.id
+            })
+        })
+        connection.query("SELECT * FROM employee", function (err, res) {
+            if (err) throw err
+            let myEmp = res.map(emp => {
+                return ({
+                    name: `${emp.first_name} ${emp.last_name}`,
+                    value: emp.id
+                })
+            })
 
+        inquirer.prompt([
+
+            {
+                type: "input",
+                name: "firstname",
+                message: "Enter the first name of the employee"
+            },
+            {
+                type: "input",
+                name: "lastname",
+                message: "Enter the last name of the employee"
+            },
+            {
+                type: "list",
+                name: "role_id",
+                message: "Choose the role for the employee",
+                choices: myRol
+            },
+            {
+                type: "list",
+                name: "manager_id",
+                message: "Choose the manager id for the employee",
+                choices: myEmp
+            }
+
+        ])
+
+            .then(function (answer) {
+                connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, lastname: answer.lastname, role_id: answer.role_id, manager_id: manager_id}, function (err) {
+                    if (err) throw err
+
+                    start();
+                }
+                )
+            })
+    })
+})
 }
