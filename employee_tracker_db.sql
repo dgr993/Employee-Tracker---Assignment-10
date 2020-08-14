@@ -40,3 +40,8 @@ foreign key (manager_id) references employee (id),
   primary key (id)
 );
 
+INSERT INTO department (name)
+VALUES ("Finance");
+
+INSERT INTO role (title,salary,department_id)
+VALUES ("CFO",100000,1);

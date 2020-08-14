@@ -113,7 +113,7 @@ function addRoles() {
         ])
 
             .then(function (answer) {
-                connection.query("INSERT INTO role SET ?", { title: answer.title, salary: answer.salary, department_id: answer.department_id}, function (err) {
+                connection.query("INSERT INTO role SET ?", { title: answer.title, salary: answer.salary, department_id: answer.department_id }, function (err) {
                     if (err) throw err
 
                     start();
@@ -140,47 +140,69 @@ function addEmployees() {
                     value: emp.id
                 })
             })
-        inquirer.prompt([
+            inquirer.prompt([
 
-            {
-                type: "input",
-                name: "firstname",
-                message: "Enter the first name of the employee"
-            },
-            {
-                type: "input",
-                name: "lastname",
-                message: "Enter the last name of the employee"
-            },
-            {
-                type: "list",
-                name: "role_id",
-                message: "Choose the role for the employee",
-                choices: myRol
-            },
-            {
-                type: "list",
-                name: "manager_id",
-                message: "Choose the manager id for the employee",
-                choices: myEmp,
-                when: function(answers) {
-                    return myEmp.length > 0
+                {
+                    type: "input",
+                    name: "firstname",
+                    message: "Enter the first name of the employee"
+                },
+                {
+                    type: "input",
+                    name: "lastname",
+                    message: "Enter the last name of the employee"
+                },
+                {
+                    type: "list",
+                    name: "role_id",
+                    message: "Choose the role for the employee",
+                    choices: myRol
+                },
+                {
+                    type: "list",
+                    name: "manager_id",
+                    message: "Choose the manager id for the employee",
+                    choices: myEmp,
+                    when: function (answers) {
+                        return myEmp.length > 0
+                    }
                 }
-            }
 
-        ])
+            ])
 
-            .then(function (answer) {
-                if (!answer.manager_id){
-                    answer.manager_id = null;
-                }
-                connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, last_name: answer.lastname, role_id: answer.role_id, manager_id: answer.manager_id}, function (err) {
-                    if (err) throw err
+                .then(function (answer) {
+                    if (!answer.manager_id) {
 
-                    start();
-                }
-                )
-            })
+
+                        connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, last_name: answer.lastname, role_id: answer.role_id }, function (err) {
+                            if (err) throw err
+
+                            start();
+                        }
+                        )
+                    }
+                    else {
+                        connection.query("INSERT INTO employee SET ?", { first_name: answer.firstname, last_name: answer.lastname, role_id: answer.role_id, manager_id: answer.manager_id }, function (err) {
+                            if (err) throw err
+
+                            start();
+                        }
+                        )
+                    }
+                })
+        })
     })
-})
+}
+
+function viewDepartments() {
+let myDep;
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err
+        myDep = res.map(dep => {
+            return ({
+                name: dep.name,
+                value: dep.id,
+            })
+        })
+    })
 }
