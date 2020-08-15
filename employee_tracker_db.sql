@@ -11,7 +11,7 @@ CREATE TABLE department(
 id int AUTO_INCREMENT not null,
   -- Create a string column called "language" --
 name varchar(30) not null, 
-  -- Set the id as this table's primary key
+  -- Set the id as this table's primary key --
   primary key (id)
 );
 
@@ -23,7 +23,7 @@ title varchar(30) not null,
 salary decimal(10,2) not null,
 department_id int not null,
 foreign key (department_id) references department (id),
-  -- Set the id as this table's primary key
+  -- Set the id as this table's primary key --
   primary key (id)
 );
 

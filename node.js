@@ -195,45 +195,104 @@ function addEmployees() {
 }
 
 function viewDepartments() {
-let viewDep ="SELECT * FROM department"; 
+    let viewDep = "SELECT * FROM department";
     connection.query(viewDep, function (err, data) {
-    if (err) throw err;
-    console.log(data);
-    start();
+        if (err) throw err;
+        console.table(data);
+        start();
     });
-    
+
 };
 
 function viewRoles() {
-    let viewRol ="SELECT * FROM role"; 
-        connection.query(viewRol, function (err, data) {
+    let viewRol = "SELECT * FROM role";
+    connection.query(viewRol, function (err, data) {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         start();
-        });
+    });
 };
 
 function viewEmployees() {
-    let viewEmp ="SELECT * FROM employee"; 
-        connection.query(viewEmp, function (err, data) {
+    let viewEmp = "SELECT * FROM employee";
+    connection.query(viewEmp, function (err, data) {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         start();
-        });
+    });
 };
 
 function updateEmpolyeeRoles() {
-    let updEmpRol ="SELECT * FROM role"; 
-        connection.query(updEmpRol, function (err, data) {
+    let updEmpRol = "SELECT * FROM role";
+    connection.query(updEmpRol, function (err, data) {
         if (err) throw err;
-        
-        inquirer
-         .prompt([
-             {
-                 type: "list",
-                 name: "updateEmployeeRoles"
-             }
-         ])
-        start();
+        let updRole = data.map(rol => {
+            return ({
+                name: `${rol.title} ${rol.salary} ${rol.department_id}`,
+                value: rol.id
+            })
+        })
+        let updDep = "SELECT * FROM department";
+        connection.query(updDep, function (departmentError, departmentData) {
+            if (departmentError) throw departmentError;
+            let updDept = departmentData.map(rol => {
+                return ({
+                    name: `${rol.name}`,
+                    value: rol.id
+                })
+            })
+            inquirer
+                .prompt([
+                    {
+                        type: "rawlist",
+                        name: "updateEmployeeRoles",
+                        choices: updRole,
+                        message: "What role would you like to update"
+                    },
+                    {
+                        type: "input",
+                        name: "new_title",
+                        message: "Enter the new title"
+                    },
+                    {
+                        type: "input",
+                        name: "new_salary",
+                        message: "Enter the new salary"
+                    },
+                    {
+                        type: "rawlist",
+                        name: "new_department",
+                        message: "Choose the new department",
+                        choices: updDept
+                    }
+                ])
+                .then(function (answer) {
+                    var chosenItemId;
+                    for (var i = 0; i < departmentData.length; i++) {
+                        if (departmentData[i].id === answer.updateEmployeeRoles) {
+                            chosenItemId = departmentData[i].id;
+                        }
+                    }
+                    connection.query(
+                        "UPDATE role SET ? WHERE ?",
+                        [
+                            {
+                                title: answer.new_title,
+                                salary: answer.new_salary,
+                                department_id: answer.new_department
+                            },
+                            {
+                                id: chosenItemId
+                            }
+                        ],
+                        function(err,data){
+                            if (err) throw err
+                            console.log(data);
+                            start();
+                        }
+                        )
+                })
+            })
+            
         });
-};
+    };
