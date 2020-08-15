@@ -161,7 +161,7 @@ function addEmployees() {
                 {
                     type: "list",
                     name: "manager_id",
-                    message: "Choose the manager id for the employee",
+                    message: "Choose the manager for the employee",
                     choices: myEmp,
                     when: function (answers) {
                         return myEmp.length > 0
@@ -195,14 +195,45 @@ function addEmployees() {
 }
 
 function viewDepartments() {
-let myDep;
-    connection.query("SELECT * FROM department", function (err, res) {
-        if (err) throw err
-        myDep = res.map(dep => {
-            return ({
-                name: dep.name,
-                value: dep.id,
-            })
-        })
-    })
-}
+let viewDep ="SELECT * FROM department"; 
+    connection.query(viewDep, function (err, data) {
+    if (err) throw err;
+    console.log(data);
+    start();
+    });
+    
+};
+
+function viewRoles() {
+    let viewRol ="SELECT * FROM role"; 
+        connection.query(viewRol, function (err, data) {
+        if (err) throw err;
+        console.log(data);
+        start();
+        });
+};
+
+function viewEmployees() {
+    let viewEmp ="SELECT * FROM employee"; 
+        connection.query(viewEmp, function (err, data) {
+        if (err) throw err;
+        console.log(data);
+        start();
+        });
+};
+
+function updateEmpolyeeRoles() {
+    let updEmpRol ="SELECT * FROM role"; 
+        connection.query(updEmpRol, function (err, data) {
+        if (err) throw err;
+        
+        inquirer
+         .prompt([
+             {
+                 type: "list",
+                 name: "updateEmployeeRoles"
+             }
+         ])
+        start();
+        });
+};
